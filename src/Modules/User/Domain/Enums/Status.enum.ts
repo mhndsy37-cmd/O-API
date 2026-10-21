@@ -1,0 +1,9 @@
+enum UserStatus{
+    ACTIVE="ACTIVE",
+    BLOCKED="BLOCKED",
+    DELETED="DELETED",
+    INACTIVE="INACTIVE",
+    SUSPENDED="SUSPENDED",
+    PENDING="PENDING"
+}
+export{UserStatus}

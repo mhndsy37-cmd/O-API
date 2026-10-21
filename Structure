@@ -1,0 +1,58 @@
+src/
+│
+├── modules/                  👈 قلمروهای کسب‌وکار (هر کدوم یک مینی‌اپلیکیشن مستقل)
+│   │
+│   ├── user/                 👈 مدیریت کاربران (ثبت‌نام، ورود، پروفایل، نقش‌ها)
+│   │   ├── domain/           👈 مغز کسب‌وکار (کلاس‌های خالص، بدون وابستگی به فریم‌ورک)
+│   │   ├── application/      👈 سناریوهای کاربردی (سرویس‌ها، DTOها، منطق هماهنگی)
+│   │   ├── infrastructure/   👈 جزئیات فنی (کنترلر، اسکیمای دیتابیس، ریپازیتوری)
+│   │   └── user.module.ts    👈 اتصال لایه‌ها به NestJS
+│   │
+│   ├── product/              👈 کاتالوگ و انبار (کتاب‌ها، قیمت، موجودی)
+│   │   ├── domain/
+│   │   ├── application/
+│   │   ├── infrastructure/
+│   │   └── product.module.ts
+│   │
+│   ├── cart/                 👈 سبد خرید موقت کاربر (ذخیره در Redis، سریع و گذرا)
+│   │   ├── domain/
+│   │   ├── application/
+│   │   ├── infrastructure/
+│   │   └── cart.module.ts
+│   │
+│   ├── order/                👈 سند قطعی خرید (چرخه وضعیت سفارش، محاسبه نهایی)
+│   │   ├── domain/
+│   │   ├── application/
+│   │   ├── infrastructure/
+│   │   └── order.module.ts
+│   │
+│   ├── payment/              👈 تراکنش مالی (ارتباط با درگاه، تأیید، برگشت وجه)
+│   │   ├── domain/
+│   │   ├── application/
+│   │   ├── infrastructure/
+│   │   └── payment.module.ts
+│   │
+│   └── notification/         👈 اطلاع‌رسانی (ایمیل، پیامک، پوش نوتیفیکیشن)
+│       ├── domain/
+│       ├── application/
+│       ├── infrastructure/
+│       └── notification.module.ts
+│
+├── shared/                   👈 زیرساخت مشترک بین همه ماژول‌ها (بدون وابستگی به modules)
+│   │
+│   ├── configs/              👈 تنظیمات کلی (دیتابیس، JWT، Redis، متغیرهای محیطی)
+│   ├── guards/               👈 نگهبان‌های احراز هویت و سطح دسترسی
+│   ├── interceptors/         👈 رهگیرها (لاگ، تبدیل خروجی، کش، تایم‌اوت)
+│   ├── filters/              👈 مدیریت سراسری خطاها و استثناها
+│   ├── pipes/                👈 اعتبارسنجی و تبدیل داده‌های ورودی
+│   ├── middlewares/          👈 میان‌افزارهای عمومی (لاگ درخواست، RequestId)
+│   ├── decorators/           👈 دکوراتورهای سفارشی (CurrentUser, Roles, Public)
+│   ├── utils/                👈 ابزارهای عمومی (تاریخ، رشته، هش، توکن، محاسبات)
+│   ├── types/                👈 تایپ‌ها و اینترفیس‌های عمومی (Pagination, ApiResponse)
+│   ├── constants/            👈 مقادیر ثابت (پیام‌ها، کلیدها، تنظیمات پیش‌فرض)
+│   ├── enums/                👈 شمارشی‌های عمومی (OrderStatus, UserRole, PaymentStatus)
+│   ├── exceptions/           👈 خطاهای سفارشی کسب‌وکار (BusinessException)
+│   └── database/             👈 ماژول اتصال به دیتابیس و مهاجرت‌ها
+│
+├── app.module.ts             👈 ماژول ریشه (وصل‌کننده همه ماژول‌ها)
+└── main.ts                   👈 نقطه شروع برنامه (راه‌اندازی سرور)
