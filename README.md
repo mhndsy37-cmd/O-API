@@ -38,7 +38,8 @@ APIs and structure may change.
 </br>
 </br>
 this project does not even utilize a `.env` file.
-
+</br>
+Please report bugs.
 ## Project Structure
 
 The codebase follows Domain-Driven Design (DDD) principles:
