@@ -10,7 +10,17 @@
 
 O-API is an early-stage backend project written in TypeScript and running on Node.js. It currently provides a partial set of user-related features and follows a Domain-Driven Design (DDD) structure.
 
-This is the **first beta release** (`v0.1.0-beta`). The project is under active development, and many modules are still empty placeholders.
+Using zod validation for the `.env` security system.
+
+Strict Use of JWT for High Security.
+
+Features a nested category system for a cleaner product front-end.
+
+A unique error-reporting system based on NestJS.
+
+Respecting API privacy rights for every product seller.
+
+This is the **secend beta release** (`v0.2.0-beta`). The project is under active development, and many modules are still empty placeholders.
 
 ## Tech Stack
 [![My Skills](https://skillicons.dev/icons?i=ts,nodejs,express,nest,mongodb&theme=dark)](https://skillicons.dev)
@@ -21,7 +31,7 @@ This is the **first beta release** (`v0.1.0-beta`). The project is under active 
 | Runtime     | Node.js                   |
 | Frameworks  | Express, NestJS           |
 | Database    | mongodb                   |
-| Version     | `v0.1.0-beta` (first beta)|
+| Version     | `v0.2.0-beta` (secend beta)|
 
 ## Features
 
@@ -37,12 +47,23 @@ This is a beta release;
 APIs and structure may change.
 </br>
 </br>
-this project does not even utilize a `.env` file.
-</br>
 Please report bugs.
 ## Project Structure
 
 The codebase follows Domain-Driven Design (DDD) principles:
+### dotenvconf
+```text
+# Server
+NODE_ENV=development
+PORT=3000
+
+# Database
+MONGO_URI=mongodb://localhost:27017/shop_db
+
+# JWT
+JWT_SECRET=your_super_secret_key_at_least_32_characters_long
+JWT_EXPIRES_IN=1d
+```
 ### Installation
 ```bash
 npm install
