@@ -1,5 +1,4 @@
 import { EmailErrorReason, InvalidEmailException } from "../Exceptions/Email.exception.js"
-type o = RegExpMatchArray
 class Email {
     private static readonly VALID_EMAIL = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
     private static readonly MAX_LENGTH = 254

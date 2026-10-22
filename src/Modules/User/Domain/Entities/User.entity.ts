@@ -26,7 +26,6 @@ import { InsufficientPermissionsException } from "../Exceptions/InsufficientPerm
 import { CannotChangeOwnRoleException } from "../Exceptions/CannotChangeOwnRole.exception.js";
 import { RoleChangedEvent } from "../Events/RoleChange.event.js";
 import { CannotBlockYourselfException } from "../Exceptions/CannotBlockYourself.exception.js";
-import { CannotDeleteYourselfException } from "../Exceptions/CannotDeleteYourself.exception.js";
 import { UserActivatedEvent } from "../Events/UserActivate.event.js";
 import { UserBlockedEvent } from "../Events/UserBlock.event.js";
 import { UserUnblockedEvent } from "../Events/UserUnblock.event.js";
@@ -35,7 +34,7 @@ import { UserSoftDeletedEvent } from "../Events/UserSoftDelete.event.js";
 import { UserCannotBeModifiedException } from "../Exceptions/UserCannotBeModified.exception.js";
 import { UserNotDeletedException } from "../Exceptions/UserNotDelete.exception.js";
 import { UserRestoredEvent } from "../Events/UserRestore.event.js";
-import { ObjectId } from "bson";
+
 
 
 class UserTemp extends AggregateRoot {

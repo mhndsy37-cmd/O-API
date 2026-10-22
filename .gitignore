@@ -117,3 +117,5 @@ tmp/
 temp/
 #####
 logicSelf
+eslint.config.mjs
+public/
