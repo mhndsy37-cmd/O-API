@@ -6,6 +6,7 @@ interface CreateProductProps {
     sellerId:string;
     price: number;
     stock: number;
+    maxPurchaseLimit: number;
     images:string[]
     categoryId: string;
 }
@@ -17,6 +18,7 @@ interface RestoreProductProps {
     sellerId:string
     price: number;
     stock: number;
+    maxPurchaseLimit: number;
     images?:string[]
     status: ProductStatus;
     categoryId: string

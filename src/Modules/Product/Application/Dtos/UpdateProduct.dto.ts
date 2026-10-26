@@ -23,5 +23,9 @@ class UpdateProductDto {
     @IsOptional()
     @IsNumber()
     stock?: number | undefined;
+
+    @IsOptional()
+    @IsNumber()
+    maxPurchaseLimit!:number|undefined;
 }
 export{UpdateProductDto}

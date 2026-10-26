@@ -40,6 +40,7 @@ class ProductService {
             sellerId: userId,
             price: dto.price,
             stock: dto.stock,
+            maxPurchaseLimit:dto.maxPurchaseLimit,
             images:[],
             categoryId: dto.categoryId
         });

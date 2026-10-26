@@ -8,6 +8,7 @@ class ProductResponseDto {
     sellerId!:string;
     price!: number;
     stock!: number;
+    maxPurchaseLimit!:number
     images!:string[]
     status!: ProductStatus;
     createdAt!: Date;

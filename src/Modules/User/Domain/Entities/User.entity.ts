@@ -74,7 +74,7 @@ class UserTemp extends AggregateRoot {
         }
     }
     //username
-    changeUsername(newUsername: string, changedBy?: UserTemp): void {
+    changeUsername(newUsername: string): void {
         this.ensureCanBeModified()
         const usernameVO = Username.create(newUsername);
         if (this.username.equals(usernameVO)) {

@@ -6,6 +6,7 @@ import { validateEnv } from './Shared/Configs/env.validation.js';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { ProductModule } from './Modules/Product/Product.module.js';
 import { CategoryModule } from './Modules/Product/Category.module.js';
+import { CartModule } from './Modules/Cart/Cart.module.js';
 @Module({
     imports: [
         ConfigModule.forRoot({
@@ -22,7 +23,8 @@ import { CategoryModule } from './Modules/Product/Category.module.js';
 
         UserModule,
         ProductModule,
-        CategoryModule
+        CategoryModule,
+        CartModule
         // OrderModule,
         //...
     ],

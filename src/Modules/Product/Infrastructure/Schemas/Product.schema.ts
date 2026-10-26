@@ -24,8 +24,12 @@ class ProductSchema {
     @Prop({ type: Number, required: true, min: 0 })
     stock!: number;
 
+    @Prop({ type: Number, required: false, default: 10 })
+    maxPurchaseLimit!: number;
+
     @Prop({ type: String, enum: ProductStatus, default: ProductStatus.DRAFT })
     status!: ProductStatus;
+
     @Prop({type: String, required: false, trim: true})
     categoryId!: string
     

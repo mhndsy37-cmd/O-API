@@ -4,8 +4,6 @@ import { UserController } from './Application/Controllers/User.controller.js';
 import { UserService } from './Application/Services/User.service.js';
 import { UserSchema, UserSchemaFactory } from './Infrastructure/Schemas/User.schema.js';
 import { UserRepositoryImpl } from './Infrastructure/Repositories/User.repsitory.impl.js';
-// import { JwtModule } from '@nestjs/jwt';
-// import { ConfigModule, ConfigService } from '@nestjs/config';
 import { AuthSharedModule } from '../../Shared/AuthShared.module.js';
 @Module({
     

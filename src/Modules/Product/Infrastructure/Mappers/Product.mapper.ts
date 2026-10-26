@@ -11,7 +11,7 @@ class ProductInfrastructureMapper {
             sellerId:doc.sellerId,
             price: doc.price,
             stock: doc.stock,
-            
+            maxPurchaseLimit:doc.maxPurchaseLimit,
             status: doc.status as ProductStatus,
             categoryId:doc.categoryId,
             createdAt: doc.createdAt || new Date(),

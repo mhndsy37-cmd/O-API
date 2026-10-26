@@ -29,6 +29,8 @@ import { LocalStorageService } from '../../Shared/Storage/LocalStorage.service.j
             useClass: LocalStorageService,
         },
     ],
-    exports: [ProductService],
+    exports: [ProductService,
+        'IProductRepository',
+    ],
 })
 export class ProductModule {}

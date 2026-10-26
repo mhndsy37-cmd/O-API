@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsNumber, IsString, MaxLength, MinLength, Min, IsOptional } from 'class-validator';
+import { IsNotEmpty, IsNumber, IsString, MaxLength, MinLength, Min, IsOptional, Max} from 'class-validator';
 
 class CreateProductDto {
     @IsString()
@@ -18,6 +18,10 @@ class CreateProductDto {
     @IsNumber()
     @Min(0)
     stock!: number;
+    @IsNumber()
+    @Max(20)
+    @Min(0)
+    maxPurchaseLimit!:number;
     @IsOptional()
     categoryId!: string
 }

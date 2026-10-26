@@ -23,6 +23,7 @@ class Product extends AggregateRoot {
         private sellerId:string,
         private price: Price,
         private stock: Stock,
+        private maxPurchaseLimit: number,
         private images: string[],
         private status: ProductStatus,
         private categoryId: string,
@@ -39,6 +40,7 @@ class Product extends AggregateRoot {
             props.sellerId,
             Price.create(props.price),
             Stock.create(props.stock),
+            props.maxPurchaseLimit,
             props.images || [],
             ProductStatus.DRAFT,
             props.categoryId,
@@ -61,6 +63,7 @@ class Product extends AggregateRoot {
             props.sellerId,
             Price.create(props.price),
             Stock.create(props.stock),
+            props.maxPurchaseLimit,
             props.images || [],
             props.status,
             props.categoryId,
@@ -190,7 +193,13 @@ class Product extends AggregateRoot {
         }
         return false;
     }
-
+    getMaxPurchaseLimit(): number {
+        return this.maxPurchaseLimit || 10;
+    }
+    changeMaxPurchaseLimit(limit: number): void {
+        this.maxPurchaseLimit = limit;
+        this.touch();
+    }
     public ensureCanBeModifiedBy(userId: string, userRole: string): void {
         if (userRole === 'ADMIN') return;
         if (userRole === 'SELLER' && this.sellerId === userId) return;
