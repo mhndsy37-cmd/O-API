@@ -118,4 +118,5 @@ temp/
 #####
 logicSelf
 eslint.config.mjs
+README.md
 public/
