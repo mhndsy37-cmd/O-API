@@ -23,5 +23,6 @@ import { AuthSharedModule } from '../../Shared/AuthShared.module.js';
             useClass: CartRepositoryImpl,
         },
     ],
+    exports: ['ICartRepository'],
 })
-export class CartModule {}
+export class CartModule { }

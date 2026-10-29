@@ -13,6 +13,7 @@ import { RolesGuard } from '../../../../Shared/Guards/Roles.guard.js';
 import { Roles } from '../../../../Shared/Decorators/Roles.decorator.js';
 import { UserRole } from '../../Domain/Enums/Role.enum.js';
 import { ChangeRoleDto } from '../Dtos/ChangeRole.dto.js';
+import { Throttle } from '@nestjs/throttler';
 @Controller('users')
 @Injectable()
 class UserController {
@@ -27,23 +28,28 @@ class UserController {
         return this.userService.getProfile(userId);
     }
     //posts
+    @Throttle({ short: { limit: 2, ttl: 60000 } })
     @Post('register')
     async register(@Body() dto: CreateUserDto): Promise<UserResponseDto> {
         return this.userService.register(dto);
     }
+    @Throttle({ short: { limit: 5, ttl: 60000 } })
     @Post('login/email-password')
     async loginEP(@Body() dto: LoginWithEmailPassword) {
         return this.userService.loginEP(dto);
     }
+    @Throttle({ short: { limit: 5, ttl: 60000 } })
     @Post('login/phone-password')
     async loginPP(@Body() dto: LoginWithPhonePasswordDto) {
         return this.userService.loginPP(dto);
     }
+    @Throttle({ short: { limit: 5, ttl: 60000 } })
     @Post('login/username-password')
     async loginUP(@Body() dto: LoginWithUsernamePasswordDto) {
         return this.userService.loginUP(dto);
     }
     //patchs
+    @Throttle({ short: { limit: 10, ttl: 60000 } })
     @UseGuards(JwtAuthGuard)
     @Patch('me')
     async updateProfile(
@@ -52,6 +58,7 @@ class UserController {
     ) {
         return this.userService.updateProfile(userId, dto);
     }
+    @Throttle({ short: { limit: 5, ttl: 60000 } })
     @UseGuards(JwtAuthGuard)
     @Patch('me/password')
     async changePassword(
@@ -60,6 +67,7 @@ class UserController {
     ) {
         return this.userService.changePassword(userId, dto);
     }
+    @Throttle({ short: { limit: 10, ttl: 60000 } })
     @UseGuards(JwtAuthGuard, RolesGuard)
     @Roles(UserRole.ADMIN)              
     @Patch('admin/:id/block')
@@ -70,6 +78,7 @@ class UserController {
     ) {
         return this.userService.blockUser(adminId, targetUserId, reason);
     }
+    @Throttle({ short: { limit: 10, ttl: 60000 } })
     @UseGuards(JwtAuthGuard, RolesGuard)
     @Roles(UserRole.ADMIN)
     @Patch('admin/:id/unblock')
@@ -79,6 +88,7 @@ class UserController {
     ) {
         return this.userService.unblockUser(adminId, targetUserId);
     }
+    @Throttle({ short: { limit: 10, ttl: 60000 } })
     @UseGuards(JwtAuthGuard, RolesGuard)
     @Roles(UserRole.ADMIN)
     @Patch('admin/:id/role')
