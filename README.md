@@ -64,4 +64,8 @@ npm run start
 
 **BASE URL:** `http://localhost:3000`
 
+<<<<<<< HEAD
 - API methods are included in releases because, with each update, they may undergo changes (MAJOR), be added (MINOR), or have associated bugs patched (PATCH).
+=======
+- API methods are included in releases because, with each update, they may undergo changes (MAJOR), be added (MINOR), or have associated bugs patched (PATCH).
+>>>>>>> a44a807d9e473084500d9663d1904172135988e8
