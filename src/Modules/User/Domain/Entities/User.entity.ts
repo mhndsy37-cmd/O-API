@@ -34,6 +34,8 @@ import { UserSoftDeletedEvent } from "../Events/UserSoftDelete.event.js";
 import { UserCannotBeModifiedException } from "../Exceptions/UserCannotBeModified.exception.js";
 import { UserNotDeletedException } from "../Exceptions/UserNotDelete.exception.js";
 import { UserRestoredEvent } from "../Events/UserRestore.event.js";
+import { UserRegisteredEvent } from "../Events/UserRegistered.event.js";
+import { AssignCredentialsException } from "../Exceptions/AssignCredentials.exception.js";
 
 
 
@@ -41,10 +43,10 @@ class UserTemp extends AggregateRoot {
 
     private constructor(
         private id: UserId,
-        private username: Username,
+        private username: Username | null,
         private fullname: Fullname,
-        private email: Email,
-        private password: Password,
+        private email: Email | null,
+        private password: Password | null,
         private phoneNumber: Phonenumber,
         private role: RoleVO,
         private status: StatusVO,
@@ -55,35 +57,66 @@ class UserTemp extends AggregateRoot {
         super()
     }
     static async create(props: CreateUserProps): Promise<UserTemp> {
-        return new UserTemp(
+        const user = new UserTemp(
             UserId.generate(),
-            Username.create(props.username),
+            props.username ? Username.create(props.username) : null,
             Fullname.create(props.fullname),
-            Email.create(props.email),
-            await Password.create(props.password),
+            props.email ? Email.create(props.email) : null,
+            props.password ? await Password.create(props.password) : null,
             Phonenumber.create(props.phonenumber),
             RoleVO.create(props.role ?? UserRole.USER),
             StatusVO.create(props.status ?? UserStatus.PENDING),
             new Date(),
             new Date()
-        )
+        );
+
+        user.addEvent(new UserRegisteredEvent(
+            user.getId().toString(),
+            user.getUsername()?.getValue() ?? null,
+            user.getEmail()?.getValue() ?? null,
+            user.getPhonenumber().getValue()
+        ));
+
+        return user;
+    }
+    async assignCredentials(username: string, password: string): Promise<void> {
+        if (this.username !== null || this.password !== null) {
+            throw new AssignCredentialsException();
+        }
+        this.username = Username.create(username);
+        this.password = await Password.create(password);
+
+        this.touch();
+    }
+    private touch() {
+        this.updatedAt = new Date()
     }
     private ensureCanBeModified(): void {
         if (!this.status.canBeModified()) {
             throw new UserCannotBeModifiedException(this.status.getValue());
         }
     }
+    private ensureCanBeModifiedUPE(): void {
+        if (!this.role.canBeModifiedUPE()) {
+            throw new UserCannotBeModifiedException(this.role.getValue());
+        }
+    }
     //username
+    // در User.entity.ts
+
     changeUsername(newUsername: string): void {
-        this.ensureCanBeModified()
+        this.ensureCanBeModified();
+        this.ensureCanBeModifiedUPE();
+        
         const usernameVO = Username.create(newUsername);
-        if (this.username.equals(usernameVO)) {
+        const oldUsername = this.username?.getValue() ?? null;
+        if (this.username && this.username.equals(usernameVO)) {
             throw new UsernameSameAsOldException();
         }
-        this.updatedAt = new Date();
-        const oldUsername = this.username.getValue();
         this.username = usernameVO;
-        this.addEvent(new UsernameChangedEvent(this.id.getValue(), oldUsername, newUsername));
+        this.touch();
+        
+        this.addEvent(new UsernameChangedEvent(this.id.toString(), oldUsername, newUsername));
     }
     private isSelf(other: UserTemp): boolean {
         return this.id.equals(other.id);
@@ -106,32 +139,47 @@ class UserTemp extends AggregateRoot {
     //password
     async changePassword(currentPlainPassword: string, newPlainPassword: string,): Promise<void> {
         this.ensureCanBeModified()
-        const isCurrentValid = await this.password.compare(currentPlainPassword);
-        if (!isCurrentValid) {
-            throw new InvalidCurrentPasswordException();
-        }
+        this.ensureCanBeModifiedUPE()
         const newPasswordVO = await Password.create(newPlainPassword);
-        if (this.password.equals(newPasswordVO)) {
-            throw new PasswordSameAsOldException();
+        if (this.password) {
+            const isCurrentValid = await this.password.compare(currentPlainPassword);
+            if (!isCurrentValid) {
+                throw new InvalidCurrentPasswordException();
+            }
+            if (this.password.equals(newPasswordVO)) {
+                throw new PasswordSameAsOldException();
+            }
+            this.password = newPasswordVO;
+            this.updatedAt = new Date();
+            this.addEvent(new PasswordChangedEvent(this.id.getValue()));
         }
-        this.password = newPasswordVO;
-        this.updatedAt = new Date();
-        this.addEvent(new PasswordChangedEvent(this.id.getValue()));
+        else {
+            this.password = newPasswordVO;
+            this.updatedAt = new Date();
+            this.addEvent(new PasswordChangedEvent(this.id.getValue()));
+        }
     }
     //email
     changeEmail(newEmail: string): void {
         this.ensureCanBeModified()
+        this.ensureCanBeModifiedUPE()
         const emailVO = Email.create(newEmail);
-        if (this.email.equals(emailVO)) {
-            throw new EmailSameAsOldException();
+        if (this.email) {
+            if (this.email.equals(emailVO)) {
+                throw new EmailSameAsOldException();
+            }
+            const oldEmail = this.email.getValue();
+            this.email = emailVO;
+            if (this.status.isActive()) {
+                this.status = this.status.transitionTo(UserStatus.PENDING);
+            }
+            this.updatedAt = new Date();
+            this.addEvent(new EmailChangedEvent(this.id.getValue(), oldEmail, newEmail,));
+        } else {
+            this.email = emailVO;
+            this.updatedAt = new Date();
+            this.addEvent(new EmailChangedEvent(this.id.getValue(), null, newEmail,));
         }
-        const oldEmail = this.email.getValue();
-        this.email = emailVO;
-        if (this.status.isActive()) {
-            this.status = this.status.transitionTo(UserStatus.PENDING);
-        }
-        this.updatedAt = new Date();
-        this.addEvent(new EmailChangedEvent(this.id.getValue(), oldEmail, newEmail,));
     }
     //Phone number
     changePhoneNumber(newPhone: string): void {
@@ -144,11 +192,8 @@ class UserTemp extends AggregateRoot {
 
         const oldPhone = this.phoneNumber.getValue();
         this.phoneNumber = phoneVO;
-        if (this.status.isActive()) {
-            this.status = this.status.transitionTo(UserStatus.PENDING);
-        }
         this.updatedAt = new Date();
-        this.addEvent(new PhoneNumberChangedEvent(this.id.getValue(), oldPhone, newPhone,));
+        this.addEvent(new PhoneNumberChangedEvent(this.id.getValue(), oldPhone, newPhone));
     }
     //status
     //active
@@ -200,7 +245,6 @@ class UserTemp extends AggregateRoot {
     }
     //del
     softDelete(deletedBy?: UserTemp): void {
-        // ✅ اگه ادمین داره حذف می‌کنه، چک مجوز
         if (deletedBy && !this.isSelf(deletedBy)) {
             if (!deletedBy.role.canManageUsers()) {
                 throw new InsufficientPermissionsException();
@@ -232,10 +276,10 @@ class UserTemp extends AggregateRoot {
     static restore(props: RestoreUserProps): UserTemp {
         return new UserTemp(
             UserId.createFromPlain(props.id),
-            Username.create(props.username),
+            props.username ? Username.create(props.username) : null, 
             Fullname.create(props.fullname),
-            Email.create(props.email),
-            Password.createFromHash(props.password),
+            props.email ? Email.create(props.email) : null,
+            props.password ? Password.createFromHash(props.password) : null,
             Phonenumber.create(props.phoneNumber),
             RoleVO.create(props.role),
             StatusVO.create(props.status),
@@ -264,16 +308,16 @@ class UserTemp extends AggregateRoot {
         this.addEvent(new RoleChangedEvent(this.id.getValue(), oldRole, newRole,));
     }
     //output
-    getId():UserId{
+    getId(): UserId {
         return this.id
     }
-    getUsername(): Username {
+    getUsername(): Username | null {
         return this.username;
     }
     getFullname(): Fullname {
         return this.fullname
     }
-    getEmail(): Email {
+    getEmail(): Email | null {
         return this.email
     }
     getPhonenumber(): Phonenumber {
@@ -285,13 +329,13 @@ class UserTemp extends AggregateRoot {
     getStatus(): StatusVO {
         return this.status
     }
-    getCreatedAt():Date{
+    getCreatedAt(): Date {
         return this.createdAt
     }
-    getPassword(): Password {
+    getPassword(): Password | null {
         return this.password;
     }
-    getUpdatedAt():Date{
+    getUpdatedAt(): Date {
         return this.updatedAt
     }
     canLogin(): boolean {

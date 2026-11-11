@@ -10,6 +10,7 @@ const envSchema = z.object({
         message: 'JWT_SECRET must be at least 32 characters long for security',
     }),
     JWT_EXPIRES_IN: z.string().default('1d'),
+    SENTRY_DSN: z.string().optional(),
 });
 type EnvConfig = z.infer<typeof envSchema>;
 

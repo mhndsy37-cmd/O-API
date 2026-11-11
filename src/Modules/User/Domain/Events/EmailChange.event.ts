@@ -5,7 +5,7 @@ class EmailChangedEvent {
 
     constructor(
         public readonly userId: ObjectId,
-        public readonly oldEmail: string,
+        public readonly oldEmail: string|null,
         public readonly newEmail: string,
     ) {
         this.occurredAt = new Date();

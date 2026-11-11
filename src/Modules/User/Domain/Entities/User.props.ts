@@ -2,20 +2,21 @@ import { UserRole } from "./../Enums/Role.enum.js";
 import { UserStatus } from "./../Enums/Status.enum.js";
 
 interface CreateUserProps{
-    username:string;
+    
     fullname:string;
-    password:string;
+    email?: string | null;
+    username?: string | null;
+    password?: string | null;
     phonenumber:string;
-    email:string;
     role?:UserRole;
     status?:UserStatus
 }
 interface RestoreUserProps {
     id: string;
-    username: string;
+    username: string|null;
     fullname: string;
-    email: string;
-    password: string;
+    email: string|null;
+    password: string|null;
     phoneNumber: string;
     role: UserRole;
     status: UserStatus;

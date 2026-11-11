@@ -76,6 +76,7 @@ class StatusVO {
     canBeModified(): boolean {
         return this.value !== UserStatus.DELETED;
     }
+    
     //trans
     canTransitionTo(next: UserStatus): boolean {
         return StatusVO.TRANSITIONS[this.value].includes(next);

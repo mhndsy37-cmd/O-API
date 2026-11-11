@@ -1,4 +1,4 @@
-import * as bcrypt from 'bcrypt';
+import * as bcrypt from 'bcryptjs';
 const SALT_ROUNDS = 8;
 async function hashPassword(plainPassword: string): Promise<string> {
     return bcrypt.hash(plainPassword, SALT_ROUNDS);

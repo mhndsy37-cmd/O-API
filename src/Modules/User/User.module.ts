@@ -22,6 +22,6 @@ import { AuthSharedModule } from '../../Shared/AuthShared.module.js';
             useClass: UserRepositoryImpl,
         },
     ],
-    exports: [UserService],
+    exports: [UserService,'IUserRepository'],
 })
 export class UserModule {}

@@ -34,6 +34,9 @@ class RoleVO {
     canEditProduct(): boolean {
         return this.value === UserRole.ADMIN || this.value === UserRole.SELLER;
     }
+    canBeModifiedUPE(): boolean {
+        return this.value !== UserRole.USER;
+    }
     canDeleteProduct(): boolean {
         return this.value === UserRole.ADMIN;
     }

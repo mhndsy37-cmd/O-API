@@ -9,14 +9,17 @@ import { OrderService } from './Application/Services/Order.service.js';
 import { OrderSchema, OrderSchemaFactory } from './Infrastructure/Schemas/Order.schema.js';
 import { OrderRepositoryImpl } from './Infrastructure/Repositories/Order.repository.impl.js';
 import { PaymentModule } from '../Payment/Payment.module.js';
+import { UserModule } from '../User/User.module.js';
 
 @Module({
     imports: [
         MongooseModule.forFeature([{ name: OrderSchema.name, schema: OrderSchemaFactory }]),
         AuthSharedModule,
         ProductModule,
-        CartModule, 
-        PaymentModule
+        UserModule,
+        CartModule,
+        PaymentModule,
+
     ],
     controllers: [OrderController],
     providers: [
@@ -25,4 +28,4 @@ import { PaymentModule } from '../Payment/Payment.module.js';
     ],
     exports: [OrderService],
 })
-export class OrderModule {}
+export class OrderModule { }

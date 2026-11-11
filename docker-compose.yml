@@ -1,0 +1,34 @@
+
+services:
+  # database
+  mongodb:
+    image: mongo:latest
+    container_name: shop-mongodb
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+    restart: always
+
+  # api
+  api:
+    build: .
+    container_name: shop-api
+    ports:
+      - "3000:3000"
+    environment:
+      # env
+      - NODE_ENV=production
+      - PORT=3000
+      # database
+      - MONGO_URI=mongodb://mongodb:27017/shop_db
+      # jwt
+      - JWT_SECRET=my_super_secret_key_1234567890_abcdefghijklmnop
+      - JWT_EXPIRES_IN=1d
+    depends_on:
+      - mongodb
+    restart: always
+
+# volume
+volumes:
+  mongo-data:

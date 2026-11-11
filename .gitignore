@@ -120,3 +120,4 @@ logicSelf
 eslint.config.mjs
 main.go
 public/
+api.code-workspace

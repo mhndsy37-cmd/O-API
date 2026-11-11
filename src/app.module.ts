@@ -1,31 +1,41 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { EventEmitterModule } from '@nestjs/event-emitter';
-import { UserModule } from './Modules/User/User.module.js';
-import { validateEnv } from './Shared/Configs/env.validation.js';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { ScheduleModule } from '@nestjs/schedule';
+import { LoggerModule } from 'nestjs-pino';
+import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
+import {  APP_GUARD } from '@nestjs/core';
+
+// config
+import { validateEnv } from './Shared/Configs/env.validation.js';
+
+// modules
+import { UserModule } from './Modules/User/User.module.js';
 import { ProductModule } from './Modules/Product/Product.module.js';
 import { CategoryModule } from './Modules/Product/Category.module.js';
 import { CartModule } from './Modules/Cart/Cart.module.js';
 import { PaymentModule } from './Modules/Payment/Payment.module.js';
-import { ScheduleModule } from '@nestjs/schedule';
-import { LoggerModule } from 'nestjs-pino';
-import { ThrottlerGuard, ThrottlerModule } from "@nestjs/throttler"
-import { APP_FILTER, APP_GUARD } from '@nestjs/core';
-import { SentryGlobalFilter } from '@sentry/nestjs/setup';
 import { OrderModule } from './Modules/Order/Order.module.js';
+import { NotificationModule } from './Modules/Notification/Notification.module.js';
+
 @Module({
     imports: [
+        // config
         ConfigModule.forRoot({
             isGlobal: true,
             validate: validateEnv,
         }),
+
+        // database
         MongooseModule.forRootAsync({
             inject: [ConfigService],
             useFactory: (config: ConfigService) => ({
                 uri: config.getOrThrow<string>('MONGO_URI'),
             }),
         }),
+
+        // logger
         LoggerModule.forRoot({
             pinoHttp: {
                 transport: {
@@ -50,6 +60,8 @@ import { OrderModule } from './Modules/Order/Order.module.js';
                 },
             },
         }),
+
+        // throttle
         ThrottlerModule.forRoot([
             {
                 name: 'short',
@@ -67,25 +79,31 @@ import { OrderModule } from './Modules/Order/Order.module.js';
                 limit: 1000,
             },
         ]),
+
+        // events
         EventEmitterModule.forRoot(),
+        
+        // schedule
         ScheduleModule.forRoot(),
 
+        // modules
         UserModule,
         ProductModule,
         CategoryModule,
         CartModule,
         PaymentModule,
-        OrderModule
-       //...
+        OrderModule,
+        NotificationModule,
     ],
     controllers: [],
-    providers: [{
-        provide: APP_GUARD,
-        useClass: ThrottlerGuard,
-    }, {
-        provide: APP_FILTER,
-        useClass: SentryGlobalFilter,
-    },
+    providers: [
+        // global
+        {
+            provide: APP_GUARD,
+            useClass: ThrottlerGuard,
+        },
+       
+        
     ],
 })
-export class AppModule { }
+export class AppModule {}
