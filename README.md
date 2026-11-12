@@ -1,12 +1,12 @@
 <h1 align="center"> O-API </h1>
-<h2 align="center"> v0.10.0-beta </h2>
+<h2 align="center"> v0.13.0-beta </h2>
 <br>
 <br>
 
 <div align="center">
 <div align="center">
 
-[![My Skills](https://skillicons.dev/icons?i=ts,nodejs,express,nestjs,mongodb,docker&theme=dark)](https://skillicons.dev)
+[![My Skills](https://skillicons.dev/icons?i=ts,nodejs,express,nestjs,mongodb,docker,redis&theme=dark)](https://skillicons.dev)
 
 </div>
 
@@ -24,107 +24,122 @@
 
 
 
-#  E-Commerce API (NestJS + DDD)
+<div align="center">
 
-A robust, scalable, and maintainable RESTful API for an e-commerce platform. Built with **NestJS** and strictly following **Domain-Driven Design (DDD)** and **Clean Architecture** principles.
+![CI](https://github.com/mhndsy37-cmd/O-API/actions/workflows/ci.yml/badge.svg)
 
-##  Architecture & Features
-- **Domain-Driven Design**: Separated into Domain, Application, and Infrastructure layers.
-- **Event-Driven Architecture**: Uses `EventEmitter2` for decoupled modules (e.g., Notifications triggering on Payment success).
-- **Authentication**: JWT-based auth with Role-Based Access Control (RBAC).
-- **Dockerized**: Fully containerized for seamless deployment.
-- **Logging & Monitoring**: Pino for logs, Sentry for error tracking.
+</div>
 
-##  API Documentation
+# O-API (E-Commerce Backend)
 
-**Base URL:** `http://localhost:3000`
-**Headers:** `Authorization: Bearer <your_jwt_token>` (Required for protected routes)
+A production-ready, highly scalable RESTful API for a modern e-commerce platform. Built with **NestJS** and **TypeScript**, strictly following **Domain-Driven Design (DDD)** and **Clean Architecture** principles.
 
-###  User Module
-| Method | Endpoint | Access | Description |
-| :--- | :--- | :--- | :--- |
-| `POST` | `/users/register` | Public | Register a new admin/seller. |
-| `POST` | `/users/register-customer` | Public | Register a customer (No password required). |
-| `POST` | `/users/login/email-password` | Public | Login with email and password. |
-| `POST` | `/users/login/phone-password` | Public | Login with phone and password. |
-| `POST` | `/users/login/username-password` | Public | Login with username and password. |
-| `POST` | `/users/login/check-identifier` | Public | Smart login: checks if user needs a password. |
-| `POST` | `/users/activate` | Public | Activate a pending user. |
-| `GET` | `/users/me` | User | Get current user profile. |
-| `PATCH` | `/users/me` | User | Update profile (username, fullname). |
-| `PATCH` | `/users/me/password` | User | Change current password. |
-| `PATCH` | `/users/admin/:id/block` | Admin | Block a user. |
-| `PATCH` | `/users/admin/:id/unblock` | Admin | Unblock a user. |
-| `PATCH` | `/users/admin/:id/role` | Admin | Change a user's role. |
-| `PATCH` | `/users/admin/:id/promote` | Admin | Promote customer to seller/admin (assigns credentials). |
+## Key Features
 
-###  Category Module
-| Method | Endpoint | Access | Description |
-| :--- | :--- | :--- | :--- |
-| `GET` | `/categories` | Public | Get the category tree. |
-| `POST` | `/categories` | Admin | Create a new category/subcategory. |
+- **Passwordless Authentication**: Secure OTP-based login/registration via SMS or Email (powered by Redis).
+- **High-Performance Cart**: Shopping cart is stored in Redis for lightning-fast read/write operations.
+- **Role-Based Access Control (RBAC)**: Distinct permissions for `ADMIN`, `SELLER`, and `CUSTOMER`.
+- **Full E-Commerce Flow**: Complete implementation of Cart, Checkout, Orders, and Payment abstraction.
+- **Event-Driven Architecture**: Decoupled modules communicating via Domain Events (e.g., triggering notifications on successful payment).
+- **Robust Security**: JWT, Helmet, Rate Limiting (Throttler), and Input Validation.
+- **Comprehensive Documentation**: Fully documented interactive API using Swagger.
+- **DevOps Ready**: Dockerized environment, automated CI/CD via GitHub Actions, Pino logging, and Sentry monitoring.
 
-###  Product Module
-| Method | Endpoint | Access | Description |
-| :--- | :--- | :--- | :--- |
-| `GET` | `/products` | Public | Get products (Visibility depends on role). |
-| `GET` | `/products/:id` | Public | Get single product details. |
-| `POST` | `/products` | Admin/Seller | Create a new product. |
-| `PATCH` | `/products/:id` | Admin/Seller | Update product details. |
-| `PATCH` | `/products/:id/publish` | Admin/Seller | Publish a draft product. |
-| `PATCH` | `/products/:id/archive` | Admin/Seller | Archive a product. |
-| `PATCH` | `/products/:id/restock` | Admin/Seller | Add stock to inventory. |
-| `PATCH` | `/products/:id/category` | Admin/Seller | Change product category. |
-| `POST` | `/products/:id/images` | Admin/Seller | Upload product image. |
+## Architecture Overview
 
-### 🛒 Cart Module
-| Method | Endpoint | Access | Description |
-| :--- | :--- | :--- | :--- |
-| `GET` | `/cart` | User | Get current user's cart. |
-| `POST` | `/cart/items` | User | Add item to cart. |
-| `PATCH` | `/cart/items/:productId` | User | Update item quantity. |
-| `DELETE` | `/cart/items/:productId` | User | Remove item from cart. |
-| `DELETE` | `/cart` | User | Clear the entire cart. |
+This project is structured into three distinct layers to ensure separation of concerns:
+- **Domain Layer**: Contains Entities, Value Objects, Domain Events, and core business rules. (Zero dependencies on frameworks).
+- **Application Layer**: Orchestrates use cases, containing Services, DTOs, and Controllers.
+- **Infrastructure Layer**: Handles technical details like MongoDB Schemas, Repositories, and external Gateways.
 
-###  Order Module
-| Method | Endpoint | Access | Description |
-| :--- | :--- | :--- | :--- |
-| `POST` | `/orders/checkout` | User | Convert cart to a PENDING order. |
-| `GET` | `/orders/my-orders` | User | Get current user's orders. |
-| `POST` | `/orders/:id/pay` | User | Initiate payment for an order. |
-| `PATCH` | `/orders/:id/status` | Admin/Seller | Update order status manually. |
+## Tech Stack
 
-###  Payment Module
-| Method | Endpoint | Access | Description |
-| :--- | :--- | :--- | :--- |
-| `POST` | `/payments/initiate` | User | Start a payment transaction. |
-| `GET` | `/payments/verify` | Public | Bank callback to verify payment. |
-| `POST` | `/payments/cancel/:authority` | User | Manually cancel a pending payment. |
+- **Framework**: NestJS
+- **Language**: TypeScript
+- **Database**: MongoDB (Mongoose)
+- **Cache / Temp Storage**: Redis (ioredis)
+- **Authentication**: JWT, Bcrypt
+- **Documentation**: Swagger (OpenAPI)
+- **DevOps**: Docker, Docker Compose, GitHub Actions
+- **Observability**: Pino (Logging), Sentry (Error Tracking)
 
 ---
 
-## ⚙️ Installation & Setup (Docker)
+## Getting Started
 
-The easiest way to run the project is using Docker.
+### Option 1: Running with Docker (Recommended)
 
-1. **Clone the repository:**
+The easiest way to run the entire stack (API + MongoDB + Redis) is using Docker.
+
+1. Clone the repository:
    ```bash
    git clone https://github.com/mhndsy37-cmd/O-API.git
    cd O-API
    ```
 
-2. **Set up environment variables:**
-   Create a `.env` file in the root directory (You can copy `.env.example`).
+2. Create a `.env` file in the root directory (or copy from `.env.example`) and fill in the required variables.
 
-3. **Run the containers:**
+3. Build and start the containers:
    ```bash
    docker compose up -d --build
    ```
 
-4. **Access the API:**
-   - API Base: `http://localhost:3000`
-<<<<<<< HEAD
-   - Swagger UI: will be added.
-=======
-   - Swagger UI: will be added.
->>>>>>> 553c47edc060433c6251032f80e4237dd377a360
+4. Access the API:
+   - **Base URL**: `http://localhost:3000`
+   - **Swagger Documentation**: `http://localhost:3000/api`
+
+### Option 2: Local Development
+
+1. Install dependencies:
+   ```bash
+   pnpm install
+   # or if you have peer dependency issues: pnpm install --config.strict-peer-dependencies=false
+   ```
+
+2. Start MongoDB and Redis (using Docker):
+   ```bash
+   docker compose up -d mongodb redis
+   ```
+
+3. Run the application:
+   ```bash
+   pnpm run start:dev
+   ```
+
+---
+
+## API Documentation
+
+Once the application is running, navigate to `http://localhost:3000/api` to access the interactive **Swagger UI**. 
+
+### Core Modules Overview:
+
+- **Auth**: OTP request and verification, Passwordless login.
+- **Users**: Registration, Login, Profile management, Role promotion.
+- **Products**: CRUD operations, Stock management, Image uploads.
+- **Categories**: Nested category tree management.
+- **Cart**: Add/Remove items, Update quantities (Stored in Redis).
+- **Orders**: Checkout process, Order status tracking.
+- **Payments**: Initiate and verify transactions (Mock gateway included).
+
+---
+
+## Roadmap
+
+- [x] Core Domain & DDD Setup
+- [x] User Authentication & RBAC
+- [x] Product & Category Management
+- [x] Redis Integration (OTP & Cart)
+- [x] Payment & Order Processing (Mock)
+- [x] Swagger Documentation
+- [x] CI/CD Pipeline (GitHub Actions)
+- [ ] Real Payment Gateway Integration (ZarinPal)
+- [ ] Address Management Module
+- [ ] Product Reviews & Ratings
+- [ ] Automated Unit & E2E Testing
+
+---
+
+## License
+
+This project is licensed under the [MIT License](LICENSE).
