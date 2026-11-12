@@ -6,7 +6,7 @@
 <div align="center">
 <div align="center">
 
-[![My Skills](https://skillicons.dev/icons?i=ts,nodejs,express,nestjs,mongodb,docker,redis&theme=dark)](https://skillicons.dev)
+[![My Skills](https://skillicons.dev/icons?i=ts,nodejs,express,nestjs,mongodb,docker,redis,githubactions&theme=dark)](https://skillicons.dev)
 
 </div>
 
