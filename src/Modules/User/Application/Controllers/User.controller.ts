@@ -17,7 +17,8 @@ import { GetUser } from '../../../../Shared/Decorators/GetUser.decorator.js';
 import { Roles } from '../../../../Shared/Decorators/Roles.decorator.js';
 import { UserRole } from '../../Domain/Enums/Role.enum.js';
 import { Throttle } from '@nestjs/throttler';
-
+import { ApiTags } from '@nestjs/swagger';
+@ApiTags('Users')
 @Controller('users')
 @Injectable()
 class UserController {

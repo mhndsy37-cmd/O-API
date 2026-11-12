@@ -1,4 +1,3 @@
-
 services:
   # database
   mongodb:
@@ -8,6 +7,14 @@ services:
       - "27017:27017"
     volumes:
       - mongo-data:/data/db
+    restart: always
+
+  # cache
+  redis:
+    image: redis:alpine
+    container_name: shop-redis
+    ports:
+      - "6379:6379"
     restart: always
 
   # api
@@ -22,11 +29,14 @@ services:
       - PORT=3000
       # database
       - MONGO_URI=mongodb://mongodb:27017/shop_db
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
       # jwt
       - JWT_SECRET=my_super_secret_key_1234567890_abcdefghijklmnop
       - JWT_EXPIRES_IN=1d
     depends_on:
       - mongodb
+      - redis
     restart: always
 
 # volume

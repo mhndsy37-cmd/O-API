@@ -2,7 +2,8 @@ import { Body, Controller, Post, Get, Query, UseGuards, Inject, Param } from '@n
 import { PaymentService } from '../Services/Payment.service.js';
 import { InitiatePaymentDto } from '../Dtos/InitiatePayment.dto.js';
 import { JwtAuthGuard } from '../../../../Shared/Guards/JwtAuth.guard.js';
-
+import { ApiTags } from '@nestjs/swagger';
+@ApiTags('Users')
 @Controller('payments')
 class PaymentController {
     constructor(

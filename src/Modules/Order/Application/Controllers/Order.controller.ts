@@ -7,7 +7,8 @@ import { Roles } from '../../../../Shared/Decorators/Roles.decorator.js';
 import { UserRole } from '../../../User/Domain/Enums/Role.enum.js';
 import { RolesGuard } from '../../../../Shared/Guards/Roles.guard.js';
 import { UpdateOrderStatusDto } from '../Dtos/UpdateOrderStatus.dto.js';
-
+import { ApiTags } from '@nestjs/swagger';
+@ApiTags('Users')
 @UseGuards(JwtAuthGuard)
 @Controller('orders')
 class OrderController {

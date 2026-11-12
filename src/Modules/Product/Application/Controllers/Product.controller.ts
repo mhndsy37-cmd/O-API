@@ -11,7 +11,8 @@ import { RestockProductDto } from '../Dtos/RestockProduct.dto.js';
 import { OptionalJwtAuthGuard } from '../../../../Shared/Guards/OptionalJwtAuth.guard.js';
 import { log } from 'console';
 import { FileInterceptor } from '@nestjs/platform-express';
-
+import { ApiTags } from '@nestjs/swagger';
+@ApiTags('Users')
 @Controller('products')
 class ProductController {
     constructor(

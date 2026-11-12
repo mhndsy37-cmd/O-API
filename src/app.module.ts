@@ -18,6 +18,8 @@ import { CartModule } from './Modules/Cart/Cart.module.js';
 import { PaymentModule } from './Modules/Payment/Payment.module.js';
 import { OrderModule } from './Modules/Order/Order.module.js';
 import { NotificationModule } from './Modules/Notification/Notification.module.js';
+import { RedisModule } from './Shared/Redis/Redis.module.js';
+import { AuthModule } from './Modules/Auth/Auth.module.js';
 
 @Module({
     imports: [
@@ -94,6 +96,8 @@ import { NotificationModule } from './Modules/Notification/Notification.module.j
         PaymentModule,
         OrderModule,
         NotificationModule,
+        AuthModule,
+        RedisModule
     ],
     controllers: [],
     providers: [

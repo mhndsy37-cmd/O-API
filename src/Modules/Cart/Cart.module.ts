@@ -4,9 +4,9 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { CartController } from './Application/Controllers/Cart.controller.js';
 import { CartService } from './Application/Services/Cart.service.js';
 import { CartSchema, CartSchemaFactory } from './Infrastructure/Schemas/Cart.schema.js';
-import { CartRepositoryImpl } from './Infrastructure/Repositories/Cart.repository.impl.js';
 import { ProductModule } from '../Product/Product.module.js';
 import { AuthSharedModule } from '../../Shared/AuthShared.module.js';
+import { RedisCartRepositoryImpl } from './Infrastructure/Repositories/RedisCart.repository.impl.js';
 @Module({
     imports: [
         MongooseModule.forFeature([
@@ -20,7 +20,7 @@ import { AuthSharedModule } from '../../Shared/AuthShared.module.js';
         CartService,
         {
             provide: 'ICartRepository',
-            useClass: CartRepositoryImpl,
+            useClass: RedisCartRepositoryImpl,
         },
     ],
     exports: ['ICartRepository'],

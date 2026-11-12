@@ -11,6 +11,8 @@ const envSchema = z.object({
     }),
     JWT_EXPIRES_IN: z.string().default('1d'),
     SENTRY_DSN: z.string().optional(),
+    REDIS_HOST: z.string().default('localhost'),
+    REDIS_PORT: z.coerce.number().default(6379),
 });
 type EnvConfig = z.infer<typeof envSchema>;
 
