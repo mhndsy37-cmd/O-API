@@ -123,4 +123,8 @@ The easiest way to run the project is using Docker.
 
 4. **Access the API:**
    - API Base: `http://localhost:3000`
+<<<<<<< HEAD
    - Swagger UI: will be added.
+=======
+   - Swagger UI: will be added.
+>>>>>>> 553c47edc060433c6251032f80e4237dd377a360
