@@ -1,0 +1,134 @@
+O-API/
+├── .github/
+│   └── workflows/
+├── src/
+│   ├── main.ts
+│   ├── app.module.ts
+│   ├── Shared/
+│   │   ├── AuthShared.module.ts
+│   │   ├── Configs/
+│   │   │   └── env.validation.ts
+│   │   ├── Decorators/
+│   │   │   ├── GetUser.decorator.ts
+│   │   │   └── Roles.decorator.ts
+│   │   ├── Domain/
+│   │   │   └── AggregateRoot.ts
+│   │   ├── Exceptions/
+│   │   │   └── DomainException.ts
+│   │   ├── Filters/
+│   │   │   └── DomainException.filter.ts
+│   │   ├── Guards/
+│   │   │   ├── JwtAuth.guard.ts
+│   │   │   ├── OptionalJwtAuth.guard.ts
+│   │   │   └── Roles.guard.ts
+│   │   ├── Interceptors/
+│   │   │   └── Transform.interceptor.ts
+│   │   ├── Storage/
+│   │   │   ├── IStorage.service.ts
+│   │   │   └── LocalStorage.service.ts
+│   │   └── Utils/
+│   │       └── Hash.util.ts
+│   └── Modules/
+│       ├── User/
+│       │   ├── user.module.ts
+│       │   ├── Domain/
+│       │   │   ├── Entities/
+│       │   │   ├── Enums/
+│       │   │   ├── Events/
+│       │   │   ├── Exceptions/
+│       │   │   ├── Repositories/
+│       │   │   └── ValueObjects/
+│       │   ├── Application/
+│       │   │   ├── Controllers/
+│       │   │   ├── Dtos/
+│       │   │   ├── Mappers/
+│       │   │   └── Services/
+│       │   └── Infrastructure/
+│       │       ├── Mappers/
+│       │       ├── Repositories/
+│       │       └── Schemas/
+│       ├── Product/
+│       │   ├── product.module.ts
+│       │   ├── Domain/
+│       │   │   ├── Entities/
+│       │   │   ├── Enums/
+│       │   │   ├── Events/
+│       │   │   ├── Exceptions/
+│       │   │   ├── Repositories/
+│       │   │   └── ValueObjects/
+│       │   ├── Application/
+│       │   │   ├── Controllers/
+│       │   │   ├── Dtos/
+│       │   │   ├── Mappers/
+│       │   │   └── Services/
+│       │   └── Infrastructure/
+│       │       ├── Mappers/
+│       │       ├── Repositories/
+│       │       └── Schemas/
+│       ├── Cart/
+│       │   ├── cart.module.ts
+│       │   ├── Domain/
+│       │   │   ├── Entities/
+│       │   │   ├── Events/
+│       │   │   ├── Exceptions/
+│       │   │   ├── Repositories/
+│       │   │   └── ValueObjects/
+│       │   ├── Application/
+│       │   │   ├── Controllers/
+│       │   │   ├── Dtos/
+│       │   │   ├── Mappers/
+│       │   │   └── Services/
+│       │   └── Infrastructure/
+│       │       ├── Mappers/
+│       │       ├── Repositories/
+│       │       └── Schemas/
+│       ├── Order/
+│       │   ├── order.module.ts
+│       │   ├── Domain/
+│       │   │   ├── Entities/
+│       │   │   ├── Enums/
+│       │   │   ├── Repositories/
+│       │   │   └── ValueObjects/
+│       │   ├── Application/
+│       │   │   ├── Controllers/
+│       │   │   ├── Dtos/
+│       │   │   └── Services/
+│       │   └── Infrastructure/
+│       │       ├── Mappers/
+│       │       ├── Repositories/
+│       │       └── Schemas/
+│       └── Payment/
+│           ├── payment.module.ts
+│           ├── Domain/
+│           │   ├── Entities/
+│           │   ├── Enums/
+│           │   ├── Events/
+│           │   ├── Repositories/
+│           │   └── ValueObjects/
+│           ├── Application/
+│           │   ├── Controllers/
+│           │   ├── Dtos/
+│           │   └── Services/
+│           └── Infrastructure/
+│               ├── Gateways/
+│               ├── Mappers/
+│               ├── Repositories/
+│               └── Schemas/
+├── .dockerignore
+├── .editorconfig
+├── .env.example
+├── .gitignore
+├── Dockerfile
+├── LICENSE
+├── README.md
+├── Structure.txt
+├── docker-compose.yml
+├── package-lock.json
+├── package.json
+├── pnpm-lock.yaml
+└── tsconfig.json
+
+Notes:
+- This tree is transcribed from the repository's Structure.txt and root-level file listing.
+- Empty directories are shown as architectural folders; the repository's Structure.txt describes example files inside many of them.
+- The .github/workflows directory is shown at the root as listed by GitHub.
